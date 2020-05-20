@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2020/05/19 21:03:48.412,=H:\Unit1.pas</Transaction>
+    <Transaction>2020/05/19 21:04:40.147,K:\SRC\GeradorDeClasses\Source\View.Principal.pas=H:\Unit1.pas</Transaction>
+    <Transaction>2020/05/19 21:04:40.147,K:\SRC\GeradorDeClasses\Source\View.Principal.dfm=H:\Unit1.dfm</Transaction>
+    <Transaction>2020/05/19 21:04:53.084,K:\SRC\GeradorDeClasses\Source\GeradorDeClasses.dproj=H:\Project1.dproj</Transaction>
+    <Transaction>2020/05/19 21:23:33.568,K:\SRC\GeradorDeClasses\Project\GeradorDeClasses.dproj=K:\SRC\GeradorDeClasses\Source\GeradorDeClasses.dproj</Transaction>
+    <Transaction>2020/05/19 21:24:08.084,K:\SRC\GeradorDeClasses\Source\View\View.Principal.pas=K:\SRC\GeradorDeClasses\Source\View.Principal.pas</Transaction>
+    <Transaction>2020/05/19 21:24:08.084,K:\SRC\GeradorDeClasses\Source\View\View.Principal.dfm=K:\SRC\GeradorDeClasses\Source\View.Principal.dfm</Transaction>
+    <Transaction>2020/05/19 21:29:52.522,K:\xx\GeradorDeClasses\Source\View\View.Principal.pas=K:\SRC\GeradorDeClasses\Source\View\View.Principal.pas</Transaction>
+    <Transaction>2020/05/19 21:29:52.522,K:\xx\GeradorDeClasses\Source\View\View.Principal.dfm=K:\SRC\GeradorDeClasses\Source\View\View.Principal.dfm</Transaction>
+    <Transaction>2020/05/19 21:30:02.568,K:\xx\GeradorDeClasses\Project\GeradorDeClasses.dproj=K:\SRC\GeradorDeClasses\Project\GeradorDeClasses.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
