@@ -1,0 +1,109 @@
+unit controller.[classe];
+
+interface
+
+uses
+  model.base, controller.base, model.[classe], dao.[classe],
+  FireDAC.Comp.Client, dao.IDAO, System.Generics.Collections;
+
+Type
+  TController[classe] = class(TBaseController<T[classe]>)
+  private
+
+  public
+    function Inserir: Boolean; override;
+    function Salvar: Boolean; override;
+    function Deletar: Boolean; override;
+    function CarregarModel(id: integer): Boolean; override;
+    procedure IniciarReiniciarModelo; override;
+    procedure FinalizarModelo; override;
+
+    function UltimoLancamento: Boolean;
+  end;
+
+implementation
+
+{ TController[classe] }
+
+function TController[classe].CarregarModel(id: integer): Boolean;
+var
+  dao: TDao[classe];
+begin
+  dao := TDao[classe].Create;
+  try
+    Result := dao.PesquisarID(FModel, id);
+    FState := stClean;
+    FModel.Notificar;
+    inherited;
+  finally
+    dao.Free;
+  end;
+end;
+
+function TController[classe].Deletar: Boolean;
+var
+  dao: TDao[classe];
+begin
+  dao := TDao[classe].Create;
+  try
+    if dao.PodeDeletar(FModel) then
+    begin
+      Result := dao.Deletar(FModel);
+      inherited;
+    end;
+  finally
+    dao.Free;
+  end;
+end;
+
+procedure TController[classe].FinalizarModelo;
+begin
+  if Assigned(FModel) then
+    FModel.Free;
+  inherited;
+end;
+
+procedure TController[classe].IniciarReiniciarModelo;
+begin
+  inherited;
+  if Assigned(FModel) then
+    FModel.Free;
+  FModel := T[classe].Create;
+end;
+
+function TController[classe].Inserir: Boolean;
+begin
+  IniciarReiniciarModelo;
+  FState := stNew;
+  Result := True;
+end;
+
+function TController[classe].Salvar: Boolean;
+var
+  dao: TDao[classe];
+begin
+  Result := False;
+  if FModel.Validar then
+  begin
+    dao := TDao[classe].Create;
+    try
+      Result := dao.SalvarOuAtualizar(FModel);
+    finally
+      dao.Free;
+    end;
+  end;
+end;
+
+function TController[classe].UltimoLancamento: Boolean;
+var
+  dao: TDao[classe];
+begin
+  dao := TDao[classe].Create;
+  try
+    Result := dao.UltimoLancamento(FModel);
+  finally
+    dao.Free;
+  end;
+end;
+
+end.

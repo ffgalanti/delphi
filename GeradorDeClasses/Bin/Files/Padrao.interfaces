@@ -1,0 +1,32 @@
+unit [appnome].Interface.[classe];
+
+interface
+
+type
+  IModel[classe] = interface
+    // ctrl+shift+g para assinar a interface
+    function Insert : IModel[classe];    
+    function Update : IModel[classe];    
+    function Delete : IModel[classe];    
+    function Search : IModel[classe];    
+  end;
+  
+  IController[classe] = interface
+    // ctrl+shift+g para assinar a interface
+    function Insert : IController[classe];    
+    function Update : IController[classe];    
+    function Delete : IController[classe];    
+    function Search : IController[classe];    
+  end;
+
+  IDao[classe] = interface
+    // ctrl+shift+g para assinar a interface
+    function Insert : IDao[classe];    
+    function Update : IDao[classe];    
+    function Delete : IDao[classe];    
+    function Search : IDao[classe];    
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,156 @@
+unit dao.[classe];
+
+interface
+
+uses model.base, dao.base, FireDAC.Comp.Client,
+  System.Classes, System.Generics.Collections,
+  System.SysUtils, model.[classe];
+
+Type
+  TDao[classe] = class(TBaseDAO<T[classe]>)
+  private
+
+  public
+    function PodeDeletar(model: T[classe]): Boolean; override;
+    function Salvar(model: T[classe]): Boolean; override;
+    function Alterar(model: T[classe]): Boolean; override;
+    function Deletar(model: T[classe]): Boolean; override;
+    function PesquisarID(model: T[classe]; id: Integer): Boolean; override;
+
+    function UltimoLancamento(model: T[classe]): Boolean;
+  end;
+
+implementation
+
+{ TDao[classe] }
+
+uses model.operador;
+
+function TDao[classe].Alterar(model: T[classe]): Boolean;
+begin
+  sql := TStringBuilder.Create('update [classe] set ')
+  .Append('[secFields][campo] = ').Append(model.[secFields][campo]).Append(', ')
+  .Append(' where id  = ').Append(model.ID.tostring);
+  Result:= Executar(sql);
+end;
+
+function TDao[classe].Deletar(model: T[classe]): Boolean;
+begin
+  Sql := TStringBuilder.Create('delete from [classe] ')
+  .Append(' where id = ').Append(model.ID);
+  Try
+    Result := Executar(sql);
+  except
+    on E: Exception do
+      listaErrosDAO.Add('Erro ao deletar registro do [classe].'+sLineBreak+
+        E.ToString+sLineBreak+sql.ToString);
+  End;
+end;
+
+function TDao[classe].PesquisarID(model: T[classe]; id: Integer): Boolean;
+begin
+  Result := False;
+  sql := TStringBuilder.Create('select * ')
+  .Append(' from [classe] where id = ')
+  .Append(id.tostring + ';');
+
+  LimparListaErrosDAO;
+  CriarQuery;
+  try
+    try
+      oQuery.Open(sql.tostring);
+
+      if not oQuery.IsEmpty then
+      begin
+        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').AsInteger;
+
+        if (DateToStr(oQuery.FieldByName('dtfechamento').AsDateTime) = '30/12/1899') then
+          model.CaixaAberto := True
+        else
+          model.CaixaAberto := False;
+
+        Result := True;
+      end
+      else
+        listaErrosDAO.Add('Registro com ID '+id.ToString+' não encontrado.');
+    except
+      on E: Exception do
+      listaErrosDAO.Add(E.ToString+sLineBreak+sql.ToString);
+    end;
+  finally
+    FreeAndNil(sql);
+    DestruirQuery;
+  end;
+end;
+
+function TDao[classe].PodeDeletar(model: T[classe]): Boolean;
+begin
+  Result := True;
+end;
+
+function TDao[classe].Salvar(model: T[classe]): Boolean;
+begin
+  Sql := TStringBuilder.Create('insert into [classe] ')
+  .Append('[secFields][campo], ')
+  .Append(') Values (')
+  .Append([secFields][campo]).Append(',')
+  .Append(');');
+
+  LimparListaErrosDAO;
+  CriarQuery;
+  try
+    try
+      oQuery.Sql.Add(Sql.ToString);
+      oQuery.ExecSQL;
+      Result := True;
+    except
+      on E: Exception do
+        listaErrosDAO.Add('Erro ao salvar abertura de [classe].' +
+        sLineBreak + E.ToString + sLineBreak + Sql.ToString);
+    end;
+  finally
+    FreeAndNil(Sql);
+    DestruirQuery;
+  end;
+end;
+
+function TDao[classe].UltimoLancamento(model: T[classe]): Boolean;
+begin
+  Result := False;
+  {Retornar sempre o ultimo registro para saber a situacao do caixa}
+  sql := TStringBuilder.Create('select ')
+  .Append('[secFields][campo], ')
+  .Append(' from [classe] ')
+//  .Append(' WHERE dtfechamento IS NULL  ')
+  .Append(' group by ')
+  .Append('[secFields][campo], ')
+  .Append('  order by ID desc Limit 1 ');
+
+  LimparListaErrosDAO;
+  CriarQuery;
+  try
+    try
+      oQuery.Open(sql.tostring);
+
+      if not oQuery.IsEmpty then
+      begin
+        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').AsInteger;
+
+        if (DateToStr(oQuery.FieldByName('dtfechamento').AsDateTime) = '30/12/1899') then
+          model.CaixaAberto := True
+        else
+          model.CaixaAberto := False;
+
+        Result := True;
+      end;
+    except
+      on E: Exception do
+      listaErrosDAO.Add(E.ToString+sLineBreak+sql.ToString);
+    end;
+  finally
+    FreeAndNil(sql);
+    DestruirQuery;
+  end;
+end;
+
+end.

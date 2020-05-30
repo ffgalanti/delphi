@@ -1,0 +1,48 @@
+unit model.[classe];
+
+interface
+
+uses
+  System.Generics.Collections, System.Classes, model.base, System.SysUtils;
+
+type
+  T[classe] = class(TBaseModel)
+  private
+    [secFields]F[campo]: [tipo];
+
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    [secProperty]property [campo]: [tipo] read F[campo] write F[campo];
+
+    function Validar:Boolean; override;
+  end;
+
+implementation
+
+{ T[classe] }
+
+constructor T[classe].Create;
+begin
+
+end;
+
+destructor T[classe].Destroy;
+begin
+
+  inherited;
+end;
+
+function T[classe].Validar: Boolean;
+begin
+  Result := True;
+end;
+
+{***** FUNCTION GETTERS *****}
+[secFncGetter]
+
+{***** FUNCTION SETTERS *****}
+[secPrcSetter]
+
+end.
