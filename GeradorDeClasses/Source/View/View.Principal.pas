@@ -5,9 +5,14 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
-  Vcl.ComCtrls, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList;
+  Vcl.ComCtrls, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
+  GeradorMVC.Interfaces.ModelConexaoFireDac,
+  GeradorMVC.Interfaces.ModelQueryFireDac, Data.DB, System.JSON, Vcl.Grids,
+  Vcl.DBGrids;
 
 type
+  TTypeDriver = (drFirebird, drPostgreSQL);
+
   TFPrincipal = class(TForm)
     pnlTitle: TPanel;
     lblTitle: TLabel;
@@ -16,62 +21,24 @@ type
     pnlConfigurationDataBase: TPanel;
     pnlDataBaseTitle: TPanel;
     Label1: TLabel;
-    cbbDriver: TComboBox;
-    Label6: TLabel;
-    Label2: TLabel;
-    edtServer: TEdit;
-    Label11: TLabel;
-    edtPorta: TEdit;
-    Label3: TLabel;
-    edtDB: TButtonedEdit;
     imgIcons24: TImageList;
     actList: TActionList;
     actClose: TAction;
     imgIcons16: TImageList;
-    Label10: TLabel;
-    edtUsuario: TEdit;
-    Label12: TLabel;
-    edtSenha: TEdit;
-    pnlConectDisconect: TPanel;
     Bevel1: TBevel;
     pnlConfigurationPath: TPanel;
     Panel2: TPanel;
     Label14: TLabel;
-    edtModel: TButtonedEdit;
-    ckInterface: TCheckBox;
-    ckModel: TCheckBox;
-    edtInterface: TButtonedEdit;
-    edtController: TButtonedEdit;
-    edtDao: TButtonedEdit;
-    ckController: TCheckBox;
-    ckDao: TCheckBox;
-    edtConfig: TButtonedEdit;
-    Label8: TLabel;
     pnlConfiguration: TPanel;
     OpenDialog1: TOpenDialog;
     actSelecionarArquivo: TAction;
-    cbxInterface: TComboBox;
-    cbxModel: TComboBox;
-    cbxController: TComboBox;
-    cbxDao: TComboBox;
-    Label9: TLabel;
-    edtNomeApp: TEdit;
     pnlDados: TPanel;
     pnlDadosTabela: TPanel;
-    Panel3: TPanel;
+    pnlDadosTablesTitle: TPanel;
     Label16: TLabel;
     Bevel2: TBevel;
     Bevel3: TBevel;
-    btnConectar: TSpeedButton;
     Bevel4: TBevel;
-    pnlToolBar: TPanel;
-    pnlPreview: TPanel;
-    Bevel6: TBevel;
-    pnlGerarArquivo: TPanel;
-    btnGerar: TSpeedButton;
-    btnPreview: TSpeedButton;
-    Bevel5: TBevel;
-    Bevel7: TBevel;
     Panel1: TPanel;
     Panel4: TPanel;
     Label4: TLabel;
@@ -85,6 +52,59 @@ type
     memoModel: TMemo;
     tabDao: TTabSheet;
     memodao: TMemo;
+    pnlConfigurarConexao: TPanel;
+    Label9: TLabel;
+    edtNomeApp: TEdit;
+    cbbDriver: TComboBox;
+    Label6: TLabel;
+    Label2: TLabel;
+    edtServer: TEdit;
+    Label11: TLabel;
+    edtPorta: TEdit;
+    Label3: TLabel;
+    edtDB: TButtonedEdit;
+    Label10: TLabel;
+    edtUsuario: TEdit;
+    Label12: TLabel;
+    edtSenha: TEdit;
+    pnlConfigurarPaths: TPanel;
+    Label8: TLabel;
+    edtConfig: TButtonedEdit;
+    ckInterface: TCheckBox;
+    edtInterface: TButtonedEdit;
+    ckModel: TCheckBox;
+    edtModel: TButtonedEdit;
+    ckController: TCheckBox;
+    edtController: TButtonedEdit;
+    ckDao: TCheckBox;
+    edtDao: TButtonedEdit;
+    pnlDadosTablesDados: TPanel;
+    pnlTables: TPanel;
+    dbgTables: TDBGrid;
+    Panel5: TPanel;
+    Label5: TLabel;
+    pnlFields: TPanel;
+    dbgFields: TDBGrid;
+    Panel6: TPanel;
+    lblFields: TLabel;
+    pnlKeys: TPanel;
+    dbgKeys: TDBGrid;
+    Panel7: TPanel;
+    Label7: TLabel;
+    pnlToolBar: TPanel;
+    Bevel6: TBevel;
+    Bevel7: TBevel;
+    pnlPreview: TPanel;
+    btnPreview: TSpeedButton;
+    pnlGerarArquivo: TPanel;
+    btnGerar: TSpeedButton;
+    pnlBtnConectar: TPanel;
+    pnlTemplate: TPanel;
+    cbxInterface: TComboBox;
+    cbxModel: TComboBox;
+    cbxController: TComboBox;
+    cbxDao: TComboBox;
+    btnConectar: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
     procedure cbbDriverChange(Sender: TObject);
@@ -97,34 +117,62 @@ type
     procedure edtControllerRightButtonClick(Sender: TObject);
     procedure edtDaoRightButtonClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnConectarClick(Sender: TObject);
+
+    procedure DSOnChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
-    procedure WMGetMinmaxInfo(var Msg: TWMGetMinmaxInfo); message WM_GETMINMAXINFO;
+    FConexaoJson: TJSONObject;
+    FSQLTabela, FSQLCampos, FSQLChaves: string;
+
+    procedure LerConfiguracao;
+    procedure GravarConfiguracao;
 
     function SelectDir(Value: String) : String;
     procedure AddFiles(APath: string; AExtensao: string; ACombo: TComboBox);
     procedure CarregarTemplates;
 
-    procedure LerConfiguracao;
-    procedure GravarConfiguracao;
-
+    procedure CriarConexaoJson; deprecated;
+    procedure CriarConexao;
+    procedure ConectarDB;
+    procedure CriarDataSource;
+    procedure ConfigurarGrids;
     procedure AtivarDesativarCtrl;
+
+    procedure GetCamposChaves;
+
+    procedure PreencherSQL(aDriver: TTypeDriver);
+    procedure ConfigurarFirebird;
+    procedure ConfigurarPostgreSQL;
+
+    procedure WMGetMinmaxInfo(var Msg: TWMGetMinmaxInfo); message WM_GETMINMAXINFO;
   public
     { Public declarations }
     AppPath: String;
+
+    FConexao     : iModelConexaoFireDac;
+    FQueryTabelas: iModelQueryFireDac;
+    FQueryCampos : iModelQueryFireDac;
+    FQueryChaves : iModelQueryFireDac;
+
+    FDsTabela: TDataSource;
+    FDsCampos: TDataSource;
+    FDsChaves: TDataSource;
   end;
 
 const
-  ArquivoIni: string = 'Config.ini';
+  ArquivoIni: string = 'config.ini';
 
 var
   FPrincipal: TFPrincipal;
 
-
 implementation
 
 uses
-  Vcl.FileCtrl, System.IniFiles;
+  System.StrUtils,
+  Vcl.FileCtrl, System.IniFiles, GeradorMVC.Model.ConexaoFireDac,
+  GeradorMVC.Model.QueryFireDac;
 
 {$R *.dfm}
 
@@ -160,31 +208,43 @@ end;
 
 procedure TFPrincipal.AtivarDesativarCtrl;
 begin
-//  pnlDados.Enabled   := FConexao.GetConn.Connected;
-//  pnlMain.Enabled    := FConexao.GetConn.Connected;
-//  btnPreview.Enabled := FConexao.GetConn.Connected;
-//  btnGerar.Enabled   := FConexao.GetConn.Connected;
-//  cxPadrao.Enabled   := FConexao.GetConn.Connected;
-//
-//  edtServer.Enabled     := not FConexao.GetConn.Connected;
-//  edtDB.Enabled         := not FConexao.GetConn.Connected;
-//  sbFile.Enabled        := not FConexao.GetConn.Connected;
-//
-//  edtNomeApp.Enabled    := not FConexao.GetConn.Connected;
-//  edtConfig.Enabled     := not FConexao.GetConn.Connected;
-//  sbConfig.Enabled      := not FConexao.GetConn.Connected;
-//  edtInterface.Enabled  := not FConexao.GetConn.Connected;
-//  sbInterface.Enabled   := not FConexao.GetConn.Connected;
-//  edtModel.Enabled      := not FConexao.GetConn.Connected;
-//  sbModel.Enabled       := not FConexao.GetConn.Connected;
-//  edtController.Enabled := not FConexao.GetConn.Connected;
-//  sbController.Enabled  := not FConexao.GetConn.Connected;
-//  edtDao.Enabled := not FConexao.GetConn.Connected;
-//  sbDao.Enabled  := not FConexao.GetConn.Connected;
-//
-//  memoModel.Lines.Clear;
-//  MemoInterface.Lines.Clear;
-//  MemoController.Lines.Clear;
+  pnlConfigurarConexao.Enabled := not FConexao.GetConn.Connected;
+  pnlConfigurarPaths.Enabled   := not FConexao.GetConn.Connected;
+
+  btnPreview.Enabled := FConexao.GetConn.Connected;
+  btnGerar.Enabled := FConexao.GetConn.Connected;
+
+  pnlClose.Enabled := not FConexao.GetConn.Connected;
+
+  MemoInterface.Lines.Clear;
+  MemoController.Lines.Clear;
+  memoModel.Lines.Clear;
+  memoController.Lines.Clear;
+
+  ConfigurarGrids;
+end;
+
+procedure TFPrincipal.btnConectarClick(Sender: TObject);
+begin
+  case FConexao.GetConn.Connected of
+    True :
+    begin
+      FConexao.GetConn.Connected := False;
+      btnConectar.Caption := 'Conectar';
+      pnlBtnConectar.Color := clGreen;
+      sbClose.Cursor := crHandPoint;
+    end;
+    False:
+    begin
+      GravarConfiguracao;
+      ConectarDB;
+      btnConectar.Caption := 'DisConectar';
+      pnlBtnConectar.Color := clRed;
+      sbClose.Cursor := crDefault;
+    end;
+  end;
+
+  AtivarDesativarCtrl;
 end;
 
 procedure TFPrincipal.CarregarTemplates;
@@ -198,20 +258,141 @@ end;
 procedure TFPrincipal.cbbDriverChange(Sender: TObject);
 begin
   case cbbDriver.ItemIndex of
-    0:
-    begin
-      edtPorta.Text := '3050';
-      edtUsuario.Text := 'sysdba';
-      edtSenha.Text := 'masterkey';
-      edtDB.RightButton.Visible := True;
-    end;
-    1:
-    begin
-      edtPorta.Text := '5432';
-      edtUsuario.Text := 'postgres';
-      edtDB.RightButton.Visible := False;
-    end;
+    0: PreencherSQL(drFirebird);
+    1: PreencherSQL(drPostgreSQL);
   end;
+end;
+
+procedure TFPrincipal.ConectarDB;
+begin
+  if edtNomeApp.Text = EmptyStr then
+    edtNomeApp.Text := 'AppNome';
+
+  GravarConfiguracao;
+  LerConfiguracao;
+
+  CriarConexaoJson;
+
+  FConexao               := TModelConexaoFireDac.New(FConexaoJson).Conectar;
+  FQueryTabelas          := TModelQueryFireDac.New(FConexao, FSQLTabela);
+  FDsTabela.DataSet      := FQueryTabelas.GetQuery;
+  FQueryTabelas.GetQuery.Active := true;
+end;
+
+procedure TFPrincipal.CriarConexaoJson;
+begin
+  try
+    if Assigned(FConexaoJson) then
+      FConexaoJson.Free;
+
+    FConexaoJson := TJSONObject.Create;
+
+    FConexaoJson.AddPair(TJSONPair.Create('user'           , TJSONString.Create(edtUsuario.Text)));
+    FConexaoJson.AddPair(TJSONPair.Create('password'       , TJSONString.Create(edtSenha.Text)));
+    FConexaoJson.AddPair(TJSONPair.Create('hostname'       , TJSONString.Create(edtServer.Text)));
+    FConexaoJson.AddPair(TJSONPair.Create('port'           , TJSONNumber.Create(edtPorta.Text)));
+    FConexaoJson.AddPair(TJSONPair.Create('database'       , TJSONString.Create(edtDB.Text)));
+    FConexaoJson.AddPair(TJSONPair.Create('protocol', TJSONString.Create('PG')));
+  except
+    on E: Exception do
+      raise Exception.Create(e.message);
+  end;
+end;
+
+procedure TFPrincipal.CriarConexao;
+begin
+  CriarConexaoJson;
+  FConexao := TModelConexaoFireDac.New(FConexaoJson);
+  CriarDataSource;
+//  FClasse := TModelClasse.New(edtNomeApp.Text, FConexao, '', modClass);
+end;
+
+procedure TFPrincipal.CriarDataSource;
+begin
+  FDsTabela := TDataSource.Create(Self);
+  dbgTables.DataSource := FDsTabela;
+  FDsTabela.OnDataChange := DSOnChange;
+
+  FDsCampos := TDataSource.Create(Self);
+  dbgFields.DataSource := FDsCampos;
+
+  FDsChaves := TDataSource.Create(Self);
+  dbgKeys.DataSource := FDsChaves;
+end;
+
+procedure TFPrincipal.DSOnChange(Sender: TObject; Field: TField);
+begin
+  GetCamposChaves;
+end;
+
+procedure TFPrincipal.ConfigurarFirebird;
+begin
+  FSQLTabela := 'select rdb$relation_name as Tabela from rdb$relations where rdb$system_flag = 0;';
+  FSQLCampos := '';
+  FSQLChaves := '';
+
+  edtPorta.Text := IfThen(edtPorta.Text = '', '3050', edtPorta.Text);
+  edtUsuario.Text := IfThen(edtUsuario.Text = '', 'sysdba', edtUsuario.Text);
+  edtSenha.Text := IfThen(edtSenha.Text = '', 'masterkey', edtSenha.Text);
+  edtDB.RightButton.Visible := True;
+end;
+
+procedure TFPrincipal.ConfigurarGrids;
+var
+  vHeight: Integer;
+begin
+  if Assigned(dbgTables.DataSource.DataSet) and (dbgTables.DataSource.DataSet.Active) then
+    dbgTables.Columns.Items[0].Width := pnlTables.Width - 25;
+
+  if Assigned(dbgFields.DataSource.DataSet) and (dbgFields.DataSource.DataSet.Active) then
+  begin
+    dbgFields.Columns.Items[0].Width := 120;
+    dbgFields.Columns.Items[1].Width := 80;
+    dbgFields.Columns.Items[2].Width := 30;
+  end;
+
+  if Assigned(dbgKeys.DataSource.DataSet) and (dbgKeys.DataSource.DataSet.Active) then
+    dbgKeys.Columns.Items[0].Width := pnlKeys.Width - 25;
+
+  vHeight := Round((pnlDadosTablesDados.Height - 25) / 10);
+
+  pnlTables.Height := vHeight * 3;
+  pnlKeys.Height := vHeight * 2;
+  pnlFields.Align := alClient;
+
+  dbgTables.Align := alClient;
+  dbgFields.Align := alClient;
+  dbgKeys.Align := alClient;
+
+  Application.ProcessMessages;
+end;
+
+procedure TFPrincipal.ConfigurarPostgreSQL;
+begin
+  FSQLTabela := 'SELECT table_name '+
+                'FROM information_schema.tables '+
+                'WHERE table_schema=''public'' '+
+                'AND table_type=''BASE TABLE'' ORDER BY table_name';
+
+  FSQLCampos := 'select column_name as Campo, data_type as Tipo, character_maximum_length as Tam ' +
+                'from information_schema.columns ' +
+                'where table_name = ''%s'' ' +
+                'order by ordinal_position';
+
+  FSQLChaves := 'select ' +
+                'pg_attribute.attname as Campos ' +
+                'from pg_index, pg_class, pg_attribute ' +
+                'where ' +
+                'pg_class.oid = ''%s''::regclass and ' +
+                'indrelid = pg_class.oid and ' +
+                'pg_attribute.attrelid = pg_class.oid and ' +
+                'pg_attribute.attnum = any(pg_index.indkey) ' +
+                'and indisprimary';
+
+  edtPorta.Text := IfThen(edtPorta.Text = '', '5432', edtPorta.Text);
+  edtUsuario.Text := IfThen(edtUsuario.Text = '', 'postgres', edtUsuario.Text);
+  edtSenha.Text := IfThen(edtSenha.Text = '', 'masterkey', edtSenha.Text);
+  edtDB.RightButton.Visible := False;
 end;
 
 procedure TFPrincipal.edtConfigRightButtonClick(Sender: TObject);
@@ -257,39 +438,38 @@ begin
   AppPath := ExtractFilePath(ParamStr(0));
 
   LerConfiguracao;
-  GravarConfiguracao;
+  CriarConexao;
 
-//  ConfigurarConexao;
-//
-//  FDsTabela := TDataSource.Create(Self);
-//  DBGrid1.DataSource := FDsTabela;
-//  FDsTabela.OnDataChange := DSOnChange;
-//
-//  FDsCampos := TDataSource.Create(Self);
-//  DBGrid2.DataSource := FDsCampos;
-//
-//  FDsChaves := TDataSource.Create(Self);
-//  DBGrid3.DataSource := FDsChaves;
-//
-//  FConexao := TModelConexaoFireDac.New(FConfiguracaoJson);
-//
-//  FQuery := TModelQueryFireDac.New(FConexao, '');
-//  FClasse := TModelClasse.New(edtNomeApp.Text, FConexao, '', modClass);
-//
-//  cxPadrao.ItemIndex := 0;
-//  pgNav.ActivePage := tabInterface;
-//
-//  memoModel.Lines.Clear;
-//  memoController.Lines.Clear;
-//  memoInterface.Lines.Clear;
+  pgNav.ActivePage := tabInterface;
 
   AtivarDesativarCtrl;
 end;
 
+procedure TFPrincipal.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FDsTabela);
+  FreeAndNil(FDsCampos);
+  FreeAndNil(FDsChaves);
+  FreeAndNil(FConexaoJson);
+end;
+
 procedure TFPrincipal.FormShow(Sender: TObject);
 begin
-  cbbDriver.ItemIndex := 0;
   cbbDriverChange(Self);
+  sbClose.Cursor := crDefault;
+end;
+
+procedure TFPrincipal.GetCamposChaves;
+begin
+  FQueryCampos          := TModelQueryFireDac.New(FConexao, Format(FSQLCampos,[dbgTables.Columns.Items[0].Field.Value]));
+  FDsCampos.DataSet     := FQueryCampos.GetQuery;
+  FQueryCampos.GetQuery.Active := true;
+
+  FQueryChaves          := TModelQueryFireDac.New(FConexao, Format(FSQLChaves,[dbgTables.Columns.Items[0].Field.Value]));
+  FDsChaves.DataSet     := FQueryChaves.GetQuery;
+  FQueryChaves.GetQuery.Active := true;
+
+  ConfigurarGrids;
 end;
 
 procedure TFPrincipal.GravarConfiguracao;
@@ -310,6 +490,8 @@ begin
     Ini.WriteBool('Gerar', 'ckModel'     , ckModel.Checked);
     Ini.WriteBool('Gerar', 'ckController', ckController.Checked);
     Ini.WriteBool('Gerar', 'ckDao'       , ckDao.Checked);
+
+    Ini.WriteInteger('DB', 'Driver'      , cbbDriver.ItemIndex);
 
     Ini.WriteString('DB', 'HostName'    , edtServer.Text);
     Ini.WriteString('DB', 'DataBase'    , edtDB.Text);
@@ -365,6 +547,8 @@ begin
     if edtDao.Text = EmptyStr then
       edtDao.Text := AppPath;
 
+    cbbDriver.ItemIndex := Ini.ReadInteger('DB', 'Driver', 0);
+
     edtServer.Text     := Ini.ReadString('DB', 'HostName', 'localhost');
     edtDB.Text         := Ini.ReadString('DB', 'DataBase', '');
     edtUsuario.Text := Ini.ReadString('DB', 'User', '');
@@ -373,6 +557,14 @@ begin
   finally
     CarregarTemplates;
     Ini.Free;
+  end;
+end;
+
+procedure TFPrincipal.PreencherSQL(aDriver: TTypeDriver);
+begin
+  case aDriver of
+    drFirebird: ConfigurarFirebird;
+    drPostgreSQL: ConfigurarPostgreSQL;
   end;
 end;
 

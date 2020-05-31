@@ -3,8 +3,8 @@ object FPrincipal: TFPrincipal
   Top = 0
   BorderStyle = bsNone
   Caption = 'Aplicativo para Gerar Classes'
-  ClientHeight = 491
-  ClientWidth = 1074
+  ClientHeight = 597
+  ClientWidth = 1290
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,13 +16,14 @@ object FPrincipal: TFPrincipal
   WindowState = wsMaximized
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel2: TBevel
     Left = 0
     Top = 30
-    Width = 1074
+    Width = 1290
     Height = 5
     Align = alTop
     Shape = bsSpacer
@@ -31,7 +32,7 @@ object FPrincipal: TFPrincipal
   object pnlTitle: TPanel
     Left = 0
     Top = 0
-    Width = 1074
+    Width = 1290
     Height = 30
     Align = alTop
     BevelOuter = bvNone
@@ -45,7 +46,7 @@ object FPrincipal: TFPrincipal
     object lblTitle: TLabel
       Left = 5
       Top = 3
-      Width = 1042
+      Width = 1258
       Height = 24
       Align = alClient
       Caption = 'Gerador de Classes'
@@ -62,7 +63,7 @@ object FPrincipal: TFPrincipal
       ExplicitHeight = 16
     end
     object pnlClose: TPanel
-      Left = 1047
+      Left = 1263
       Top = 3
       Width = 24
       Height = 24
@@ -96,8 +97,8 @@ object FPrincipal: TFPrincipal
   object pnlDados: TPanel
     Left = 0
     Top = 35
-    Width = 1074
-    Height = 456
+    Width = 1290
+    Height = 562
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 5
@@ -106,8 +107,8 @@ object FPrincipal: TFPrincipal
     TabOrder = 1
     object Bevel3: TBevel
       Left = 5
-      Top = 180
-      Width = 1064
+      Top = 170
+      Width = 1280
       Height = 5
       Align = alTop
       Shape = bsSpacer
@@ -116,10 +117,10 @@ object FPrincipal: TFPrincipal
       ExplicitWidth = 461
     end
     object Bevel8: TBevel
-      Left = 319
-      Top = 185
+      Left = 285
+      Top = 175
       Width = 5
-      Height = 266
+      Height = 382
       Align = alLeft
       Shape = bsSpacer
       ExplicitLeft = 0
@@ -129,16 +130,16 @@ object FPrincipal: TFPrincipal
     object pnlConfiguration: TPanel
       Left = 5
       Top = 0
-      Width = 1064
-      Height = 180
+      Width = 1280
+      Height = 170
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
       object Bevel1: TBevel
-        Left = 600
+        Left = 457
         Top = 0
         Width = 5
-        Height = 180
+        Height = 170
         Align = alLeft
         Shape = bsSpacer
         ExplicitLeft = 0
@@ -148,88 +149,38 @@ object FPrincipal: TFPrincipal
       object pnlConfigurationDataBase: TPanel
         Left = 0
         Top = 0
-        Width = 600
-        Height = 180
+        Width = 457
+        Height = 170
         Align = alLeft
         BevelOuter = bvNone
         BorderStyle = bsSingle
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 0
-        object Label6: TLabel
-          Left = 58
-          Top = 64
-          Width = 29
-          Height = 13
-          Caption = 'Driver'
-        end
-        object Label2: TLabel
-          Left = 217
-          Top = 64
-          Width = 40
-          Height = 13
-          Caption = 'Servidor'
-        end
-        object Label11: TLabel
-          Left = 361
-          Top = 64
-          Width = 26
-          Height = 13
-          Caption = 'Porta'
-        end
-        object Label3: TLabel
-          Left = 10
-          Top = 93
-          Width = 77
-          Height = 13
-          Caption = 'Banco de Dados'
-        end
-        object Label10: TLabel
-          Left = 51
-          Top = 123
-          Width = 36
-          Height = 13
-          Caption = 'Usu'#225'rio'
-        end
-        object Label12: TLabel
-          Left = 207
-          Top = 123
-          Width = 30
-          Height = 13
-          Caption = 'Senha'
-        end
-        object Label9: TLabel
-          Left = 11
-          Top = 33
-          Width = 76
-          Height = 13
-          Caption = 'Nome Aplicativo'
-        end
         object Bevel4: TBevel
           Left = 0
-          Top = 173
-          Width = 598
+          Top = 163
+          Width = 455
           Height = 5
           Align = alBottom
           Shape = bsSpacer
           ExplicitTop = 184
-          ExplicitWidth = 455
         end
         object pnlDataBaseTitle: TPanel
           Left = 0
           Top = 0
-          Width = 598
+          Width = 455
           Height = 25
           Align = alTop
           BevelOuter = bvNone
           Color = 5066061
           Padding.Left = 5
           ParentBackground = False
-          TabOrder = 1
+          TabOrder = 0
           object Label1: TLabel
             Left = 5
             Top = 0
-            Width = 593
+            Width = 450
             Height = 25
             Align = alClient
             Caption = 'Configura'#231#227'o do banco de dados'
@@ -246,151 +197,364 @@ object FPrincipal: TFPrincipal
             ExplicitHeight = 16
           end
         end
-        object cbbDriver: TComboBox
-          Left = 90
-          Top = 60
-          Width = 104
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 0
-          OnChange = cbbDriverChange
-          Items.Strings = (
-            'Firebird'
-            'PostgreSQL')
+        object pnlConfigurarConexao: TPanel
+          Left = 0
+          Top = 25
+          Width = 455
+          Height = 138
+          Align = alClient
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label9: TLabel
+            Left = 11
+            Top = 18
+            Width = 76
+            Height = 13
+            Caption = 'Nome Aplicativo'
+          end
+          object Label6: TLabel
+            Left = 58
+            Top = 49
+            Width = 29
+            Height = 13
+            Caption = 'Driver'
+          end
+          object Label2: TLabel
+            Left = 217
+            Top = 49
+            Width = 40
+            Height = 13
+            Caption = 'Servidor'
+          end
+          object Label11: TLabel
+            Left = 361
+            Top = 49
+            Width = 26
+            Height = 13
+            Caption = 'Porta'
+          end
+          object Label3: TLabel
+            Left = 10
+            Top = 78
+            Width = 77
+            Height = 13
+            Caption = 'Banco de Dados'
+          end
+          object Label10: TLabel
+            Left = 51
+            Top = 108
+            Width = 36
+            Height = 13
+            Caption = 'Usu'#225'rio'
+          end
+          object Label12: TLabel
+            Left = 207
+            Top = 108
+            Width = 30
+            Height = 13
+            Caption = 'Senha'
+          end
+          object edtNomeApp: TEdit
+            Left = 90
+            Top = 15
+            Width = 131
+            Height = 19
+            TabOrder = 0
+          end
+          object cbbDriver: TComboBox
+            Left = 90
+            Top = 45
+            Width = 104
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 1
+            OnChange = cbbDriverChange
+            Items.Strings = (
+              'Firebird'
+              'PostgreSQL')
+          end
+          object edtServer: TEdit
+            Left = 267
+            Top = 46
+            Width = 80
+            Height = 19
+            TabOrder = 2
+            Text = '127.0.0.1'
+          end
+          object edtPorta: TEdit
+            Left = 397
+            Top = 46
+            Width = 50
+            Height = 19
+            TabOrder = 3
+          end
+          object edtDB: TButtonedEdit
+            Left = 90
+            Top = 75
+            Width = 357
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 4
+            OnRightButtonClick = edtDBRightButtonClick
+          end
+          object edtUsuario: TEdit
+            Left = 90
+            Top = 105
+            Width = 100
+            Height = 19
+            TabOrder = 5
+          end
+          object edtSenha: TEdit
+            Left = 247
+            Top = 105
+            Width = 100
+            Height = 19
+            TabOrder = 6
+          end
         end
-        object edtServer: TEdit
-          Left = 267
-          Top = 61
-          Width = 80
-          Height = 19
+        object pnlBtnConectar: TPanel
+          Left = 310
+          Top = 31
+          Width = 137
+          Height = 31
+          BevelOuter = bvNone
+          Color = clGreen
+          ParentBackground = False
           TabOrder = 2
-          Text = '127.0.0.1'
+          object btnConectar: TSpeedButton
+            Left = 0
+            Top = 0
+            Width = 137
+            Height = 31
+            Align = alClient
+            Caption = 'Conectar'
+            Flat = True
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            OnClick = btnConectarClick
+            ExplicitLeft = 48
+            ExplicitWidth = 23
+            ExplicitHeight = 22
+          end
         end
-        object edtPorta: TEdit
-          Left = 397
-          Top = 61
-          Width = 50
-          Height = 19
-          TabOrder = 6
+      end
+      object pnlConfigurationPath: TPanel
+        Left = 462
+        Top = 0
+        Width = 818
+        Height = 170
+        Align = alClient
+        BevelOuter = bvNone
+        BorderStyle = bsSingle
+        Ctl3D = False
+        ParentCtl3D = False
+        TabOrder = 1
+        object Panel2: TPanel
+          Left = 0
+          Top = 0
+          Width = 816
+          Height = 25
+          Align = alTop
+          BevelOuter = bvNone
+          Color = 5066061
+          Padding.Left = 5
+          ParentBackground = False
+          TabOrder = 0
+          object Label14: TLabel
+            Left = 5
+            Top = 0
+            Width = 811
+            Height = 25
+            Align = alClient
+            Caption = 'Configura'#231#227'o dos Arquivos'
+            Color = clSkyBlue
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clSilver
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            Layout = tlCenter
+            ExplicitWidth = 174
+            ExplicitHeight = 16
+          end
         end
-        object edtDB: TButtonedEdit
-          Left = 90
-          Top = 90
-          Width = 351
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 3
-          OnRightButtonClick = edtDBRightButtonClick
-        end
-        object edtUsuario: TEdit
-          Left = 90
-          Top = 120
-          Width = 100
-          Height = 19
-          TabOrder = 4
-        end
-        object edtSenha: TEdit
-          Left = 247
-          Top = 120
-          Width = 100
-          Height = 19
-          TabOrder = 5
-        end
-        object edtNomeApp: TEdit
-          Left = 90
-          Top = 30
-          Width = 131
-          Height = 19
-          TabOrder = 7
+        object pnlConfigurarPaths: TPanel
+          Left = 0
+          Top = 25
+          Width = 485
+          Height = 143
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'pnlConfigurarPaths'
+          ShowCaption = False
+          TabOrder = 1
+          object Label8: TLabel
+            Left = 10
+            Top = 8
+            Width = 94
+            Height = 13
+            Caption = 'Pasta Configura'#231#227'o'
+          end
+          object edtConfig: TButtonedEdit
+            Left = 130
+            Top = 5
+            Width = 350
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 0
+            OnRightButtonClick = edtConfigRightButtonClick
+          end
+          object ckInterface: TCheckBox
+            Left = 10
+            Top = 31
+            Width = 120
+            Height = 17
+            Caption = 'Gerar Interfaces em'
+            TabOrder = 1
+          end
+          object edtInterface: TButtonedEdit
+            Left = 130
+            Top = 30
+            Width = 350
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 2
+            OnRightButtonClick = edtInterfaceRightButtonClick
+          end
+          object ckModel: TCheckBox
+            Left = 10
+            Top = 56
+            Width = 120
+            Height = 17
+            Caption = 'Gerar Model em'
+            TabOrder = 3
+          end
+          object edtModel: TButtonedEdit
+            Left = 130
+            Top = 55
+            Width = 350
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 4
+            OnRightButtonClick = edtModelRightButtonClick
+          end
+          object ckController: TCheckBox
+            Left = 10
+            Top = 81
+            Width = 120
+            Height = 17
+            Caption = 'Gerar Controller em'
+            TabOrder = 5
+          end
+          object edtController: TButtonedEdit
+            Left = 130
+            Top = 80
+            Width = 350
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 6
+            OnRightButtonClick = edtControllerRightButtonClick
+          end
+          object ckDao: TCheckBox
+            Left = 10
+            Top = 106
+            Width = 120
+            Height = 17
+            Caption = 'Gerar Dao em'
+            TabOrder = 7
+          end
+          object edtDao: TButtonedEdit
+            Left = 130
+            Top = 105
+            Width = 350
+            Height = 19
+            Images = imgIcons16
+            RightButton.DisabledImageIndex = 0
+            RightButton.HotImageIndex = 0
+            RightButton.ImageIndex = 0
+            RightButton.PressedImageIndex = 0
+            RightButton.Visible = True
+            TabOrder = 8
+            OnRightButtonClick = edtDaoRightButtonClick
+          end
         end
         object pnlToolBar: TPanel
-          Left = 448
+          Left = 696
           Top = 25
-          Width = 150
-          Height = 148
+          Width = 120
+          Height = 143
           Align = alRight
           BevelOuter = bvNone
           Padding.Left = 5
           Padding.Right = 5
           ParentBackground = False
-          TabOrder = 8
+          TabOrder = 2
           object Bevel6: TBevel
             Left = 5
-            Top = 80
-            Width = 140
+            Top = 35
+            Width = 110
             Height = 5
             Align = alTop
             Shape = bsSpacer
             ExplicitTop = 96
-          end
-          object Bevel5: TBevel
-            Left = 5
-            Top = 0
-            Width = 140
-            Height = 5
-            Align = alTop
-            Shape = bsSpacer
-            ExplicitLeft = 10
+            ExplicitWidth = 140
           end
           object Bevel7: TBevel
             Left = 5
-            Top = 45
-            Width = 140
+            Top = 0
+            Width = 110
             Height = 5
             Align = alTop
             Shape = bsSpacer
             ExplicitLeft = 140
-            ExplicitTop = 0
             ExplicitWidth = 120
-          end
-          object pnlConectDisconect: TPanel
-            Left = 5
-            Top = 5
-            Width = 140
-            Height = 40
-            Align = alTop
-            BevelOuter = bvNone
-            Color = clGreen
-            ParentBackground = False
-            TabOrder = 0
-            object btnConectar: TSpeedButton
-              Left = 0
-              Top = 0
-              Width = 140
-              Height = 40
-              Align = alClient
-              Caption = 'Conectar'
-              Flat = True
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWhite
-              Font.Height = -11
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-              ExplicitLeft = 48
-              ExplicitWidth = 23
-              ExplicitHeight = 22
-            end
           end
           object pnlPreview: TPanel
             Left = 5
-            Top = 50
-            Width = 140
+            Top = 5
+            Width = 110
             Height = 30
             Align = alTop
             BevelOuter = bvNone
             Color = clOlive
             ParentBackground = False
-            TabOrder = 1
+            TabOrder = 0
+            ExplicitWidth = 94
             object btnPreview: TSpeedButton
               Left = 0
               Top = 0
-              Width = 140
+              Width = 110
               Height = 30
               Align = alClient
               Caption = 'Preview'
@@ -409,19 +573,20 @@ object FPrincipal: TFPrincipal
           end
           object pnlGerarArquivo: TPanel
             Left = 5
-            Top = 85
-            Width = 140
-            Height = 63
+            Top = 40
+            Width = 110
+            Height = 103
             Align = alClient
             BevelOuter = bvNone
             Color = clNavy
             ParentBackground = False
-            TabOrder = 2
+            TabOrder = 1
+            ExplicitWidth = 94
             object btnGerar: TSpeedButton
               Left = 0
               Top = 0
-              Width = 140
-              Height = 63
+              Width = 110
+              Height = 103
               Align = alClient
               Caption = 'Gerar Arquivos'
               Flat = True
@@ -437,227 +602,107 @@ object FPrincipal: TFPrincipal
             end
           end
         end
-      end
-      object pnlConfigurationPath: TPanel
-        Left = 605
-        Top = 0
-        Width = 459
-        Height = 180
-        Align = alClient
-        BevelOuter = bvNone
-        BorderStyle = bsSingle
-        Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 1
-        object Label8: TLabel
-          Left = 10
-          Top = 33
-          Width = 94
-          Height = 13
-          Caption = 'Pasta Configura'#231#227'o'
-        end
-        object Panel2: TPanel
-          Left = 0
-          Top = 0
-          Width = 457
-          Height = 25
-          Align = alTop
+        object pnlTemplate: TPanel
+          Left = 485
+          Top = 25
+          Width = 211
+          Height = 143
+          Align = alClient
           BevelOuter = bvNone
-          Color = 5066061
-          Padding.Left = 5
-          ParentBackground = False
-          TabOrder = 13
-          object Label14: TLabel
-            Left = 5
-            Top = 0
-            Width = 452
-            Height = 25
-            Align = alClient
-            Caption = 'Configura'#231#227'o dos Arquivos'
-            Color = clSkyBlue
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clSilver
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentColor = False
-            ParentFont = False
-            Layout = tlCenter
-            ExplicitWidth = 174
-            ExplicitHeight = 16
-          end
-        end
-        object edtModel: TButtonedEdit
-          Left = 130
-          Top = 90
-          Width = 350
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 5
-          OnRightButtonClick = edtModelRightButtonClick
-        end
-        object ckInterface: TCheckBox
-          Left = 10
-          Top = 61
-          Width = 120
-          Height = 17
-          Caption = 'Gerar Interfaces em'
-          TabOrder = 1
-        end
-        object ckModel: TCheckBox
-          Left = 10
-          Top = 91
-          Width = 120
-          Height = 17
-          Caption = 'Gerar Model em'
-          TabOrder = 4
-        end
-        object edtInterface: TButtonedEdit
-          Left = 130
-          Top = 60
-          Width = 350
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 2
-          OnRightButtonClick = edtInterfaceRightButtonClick
-        end
-        object edtController: TButtonedEdit
-          Left = 130
-          Top = 120
-          Width = 350
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 8
-          OnRightButtonClick = edtControllerRightButtonClick
-        end
-        object edtDao: TButtonedEdit
-          Left = 130
-          Top = 150
-          Width = 350
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 11
-          OnRightButtonClick = edtDaoRightButtonClick
-        end
-        object ckController: TCheckBox
-          Left = 10
-          Top = 121
-          Width = 120
-          Height = 17
-          Caption = 'Gerar Controller em'
-          TabOrder = 7
-        end
-        object ckDao: TCheckBox
-          Left = 10
-          Top = 151
-          Width = 120
-          Height = 17
-          Caption = 'Gerar Dao em'
-          TabOrder = 10
-        end
-        object edtConfig: TButtonedEdit
-          Left = 130
-          Top = 30
-          Width = 350
-          Height = 19
-          Images = imgIcons16
-          RightButton.DisabledImageIndex = 0
-          RightButton.HotImageIndex = 0
-          RightButton.ImageIndex = 0
-          RightButton.PressedImageIndex = 0
-          RightButton.Visible = True
-          TabOrder = 0
-          OnRightButtonClick = edtConfigRightButtonClick
-        end
-        object cbxInterface: TComboBox
-          Left = 486
-          Top = 60
-          Width = 220
-          Height = 21
-          Style = csDropDownList
+          Caption = 'pnlTemplate'
+          ShowCaption = False
           TabOrder = 3
-          Items.Strings = (
-            'Classe'
-            'Classe + Property'
-            'Classe + Property + Setters'
-            'Classe + Property + Setters + Getters')
-        end
-        object cbxModel: TComboBox
-          Left = 486
-          Top = 90
-          Width = 220
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 6
-          Items.Strings = (
-            'Classe'
-            'Classe + Property'
-            'Classe + Property + Setters'
-            'Classe + Property + Setters + Getters')
-        end
-        object cbxController: TComboBox
-          Left = 486
-          Top = 120
-          Width = 220
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 9
-          Items.Strings = (
-            'Classe'
-            'Classe + Property'
-            'Classe + Property + Setters'
-            'Classe + Property + Setters + Getters')
-        end
-        object cbxDao: TComboBox
-          Left = 486
-          Top = 150
-          Width = 220
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 12
-          Items.Strings = (
-            'Classe'
-            'Classe + Property'
-            'Classe + Property + Setters'
-            'Classe + Property + Setters + Getters')
+          ExplicitWidth = 227
+          object cbxInterface: TComboBox
+            AlignWithMargins = True
+            Left = 3
+            Top = 30
+            Width = 205
+            Height = 21
+            Margins.Top = 30
+            Margins.Bottom = 0
+            Align = alTop
+            Style = csDropDownList
+            TabOrder = 0
+            Items.Strings = (
+              'Classe'
+              'Classe + Property'
+              'Classe + Property + Setters'
+              'Classe + Property + Setters + Getters')
+            ExplicitWidth = 221
+          end
+          object cbxModel: TComboBox
+            AlignWithMargins = True
+            Left = 3
+            Top = 55
+            Width = 205
+            Height = 21
+            Margins.Top = 4
+            Margins.Bottom = 0
+            Align = alTop
+            Style = csDropDownList
+            TabOrder = 1
+            Items.Strings = (
+              'Classe'
+              'Classe + Property'
+              'Classe + Property + Setters'
+              'Classe + Property + Setters + Getters')
+            ExplicitWidth = 221
+          end
+          object cbxController: TComboBox
+            AlignWithMargins = True
+            Left = 3
+            Top = 80
+            Width = 205
+            Height = 21
+            Margins.Top = 4
+            Margins.Bottom = 0
+            Align = alTop
+            Style = csDropDownList
+            TabOrder = 2
+            Items.Strings = (
+              'Classe'
+              'Classe + Property'
+              'Classe + Property + Setters'
+              'Classe + Property + Setters + Getters')
+            ExplicitWidth = 221
+          end
+          object cbxDao: TComboBox
+            AlignWithMargins = True
+            Left = 3
+            Top = 105
+            Width = 205
+            Height = 21
+            Margins.Top = 4
+            Margins.Bottom = 0
+            Align = alTop
+            Style = csDropDownList
+            TabOrder = 3
+            Items.Strings = (
+              'Classe'
+              'Classe + Property'
+              'Classe + Property + Setters'
+              'Classe + Property + Setters + Getters')
+            ExplicitWidth = 221
+          end
         end
       end
     end
     object pnlDadosTabela: TPanel
       Left = 5
-      Top = 185
-      Width = 314
-      Height = 266
+      Top = 175
+      Width = 280
+      Height = 382
       Align = alLeft
       BevelOuter = bvNone
       BorderStyle = bsSingle
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
-      object Panel3: TPanel
+      object pnlDadosTablesTitle: TPanel
         Left = 0
         Top = 0
-        Width = 312
+        Width = 278
         Height = 25
         Align = alTop
         BevelOuter = bvNone
@@ -665,10 +710,11 @@ object FPrincipal: TFPrincipal
         Padding.Left = 5
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 312
         object Label16: TLabel
           Left = 5
           Top = 0
-          Width = 307
+          Width = 273
           Height = 25
           Align = alClient
           Caption = 'Informa'#231#245'es do Banco de Dados'
@@ -685,22 +731,210 @@ object FPrincipal: TFPrincipal
           ExplicitHeight = 16
         end
       end
+      object pnlDadosTablesDados: TPanel
+        Left = 0
+        Top = 25
+        Width = 278
+        Height = 355
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'pnlDadosTablesDados'
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ShowCaption = False
+        TabOrder = 1
+        ExplicitWidth = 312
+        object pnlTables: TPanel
+          Left = 5
+          Top = 5
+          Width = 268
+          Height = 100
+          Align = alTop
+          BevelOuter = bvNone
+          Padding.Bottom = 5
+          TabOrder = 0
+          ExplicitWidth = 302
+          object dbgTables: TDBGrid
+            Left = 0
+            Top = 17
+            Width = 268
+            Height = 78
+            Align = alClient
+            Options = [dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+          end
+          object Panel5: TPanel
+            Left = 0
+            Top = 0
+            Width = 268
+            Height = 17
+            Align = alTop
+            BevelOuter = bvNone
+            Color = 5066061
+            Padding.Left = 5
+            ParentBackground = False
+            TabOrder = 1
+            ExplicitWidth = 302
+            object Label5: TLabel
+              Left = 5
+              Top = 0
+              Width = 263
+              Height = 17
+              Align = alClient
+              Caption = 'Tabelas'
+              Color = clSkyBlue
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clSilver
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              Layout = tlCenter
+              ExplicitWidth = 44
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object pnlFields: TPanel
+          Left = 5
+          Top = 105
+          Width = 268
+          Height = 145
+          Align = alClient
+          BevelOuter = bvNone
+          Padding.Bottom = 5
+          TabOrder = 1
+          ExplicitWidth = 302
+          object dbgFields: TDBGrid
+            Left = 0
+            Top = 17
+            Width = 268
+            Height = 123
+            Align = alClient
+            Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+          end
+          object Panel6: TPanel
+            Left = 0
+            Top = 0
+            Width = 268
+            Height = 17
+            Align = alTop
+            BevelOuter = bvNone
+            Color = 5066061
+            Padding.Left = 5
+            ParentBackground = False
+            TabOrder = 1
+            ExplicitWidth = 302
+            object lblFields: TLabel
+              Left = 5
+              Top = 0
+              Width = 263
+              Height = 17
+              Align = alClient
+              Caption = 'Campos'
+              Color = clSkyBlue
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clSilver
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              Layout = tlCenter
+              ExplicitWidth = 45
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object pnlKeys: TPanel
+          Left = 5
+          Top = 250
+          Width = 268
+          Height = 100
+          Align = alBottom
+          BevelOuter = bvNone
+          TabOrder = 2
+          ExplicitWidth = 302
+          object dbgKeys: TDBGrid
+            Left = 0
+            Top = 17
+            Width = 268
+            Height = 83
+            Align = alClient
+            Options = [dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+          end
+          object Panel7: TPanel
+            Left = 0
+            Top = 0
+            Width = 268
+            Height = 17
+            Align = alTop
+            BevelOuter = bvNone
+            Color = 5066061
+            Padding.Left = 5
+            ParentBackground = False
+            TabOrder = 1
+            ExplicitWidth = 302
+            object Label7: TLabel
+              Left = 5
+              Top = 0
+              Width = 263
+              Height = 17
+              Align = alClient
+              Caption = 'Chave Prim'#225'ria'
+              Color = clSkyBlue
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clSilver
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              Layout = tlCenter
+              ExplicitWidth = 86
+              ExplicitHeight = 13
+            end
+          end
+        end
+      end
     end
     object Panel1: TPanel
-      Left = 324
-      Top = 185
-      Width = 745
-      Height = 266
+      Left = 290
+      Top = 175
+      Width = 995
+      Height = 382
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 2
+      ExplicitLeft = 324
+      ExplicitWidth = 961
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 743
+        Width = 993
         Height = 25
         Align = alTop
         BevelOuter = bvNone
@@ -708,10 +942,11 @@ object FPrincipal: TFPrincipal
         Padding.Left = 5
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 959
         object Label4: TLabel
           Left = 5
           Top = 0
-          Width = 738
+          Width = 988
           Height = 25
           Align = alClient
           Caption = 'Preview dos arquivos'
@@ -731,44 +966,50 @@ object FPrincipal: TFPrincipal
       object pgNav: TPageControl
         Left = 0
         Top = 25
-        Width = 743
-        Height = 239
+        Width = 993
+        Height = 355
         ActivePage = tabController
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 959
         object tabInterface: TTabSheet
           Caption = 'Interface'
+          ExplicitWidth = 951
           object memoInterface: TMemo
             Left = 0
             Top = 0
-            Width = 735
-            Height = 211
+            Width = 985
+            Height = 327
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
+            ExplicitWidth = 951
           end
         end
         object tabController: TTabSheet
           Caption = 'Controller'
           ImageIndex = 1
+          ExplicitWidth = 951
           object memoController: TMemo
             Left = 0
             Top = 0
-            Width = 735
-            Height = 211
+            Width = 985
+            Height = 327
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
+            ExplicitWidth = 951
           end
         end
         object tabModel: TTabSheet
           Caption = 'Model'
           ImageIndex = 2
+          ExplicitWidth = 951
           object memoModel: TMemo
             Left = 0
             Top = 0
-            Width = 735
-            Height = 211
+            Width = 985
+            Height = 327
             Align = alClient
             Lines.Strings = (
               '{'
@@ -782,19 +1023,22 @@ object FPrincipal: TFPrincipal
               '}')
             ScrollBars = ssVertical
             TabOrder = 0
+            ExplicitWidth = 951
           end
         end
         object tabDao: TTabSheet
           Caption = 'Dao'
           ImageIndex = 3
+          ExplicitWidth = 951
           object memodao: TMemo
             Left = 0
             Top = 0
-            Width = 735
-            Height = 211
+            Width = 985
+            Height = 327
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
+            ExplicitWidth = 951
           end
         end
       end
