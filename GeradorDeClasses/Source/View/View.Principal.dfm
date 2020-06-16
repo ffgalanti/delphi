@@ -36,7 +36,7 @@ object FPrincipal: TFPrincipal
     Height = 30
     Align = alTop
     BevelOuter = bvNone
-    Color = 5066061
+    Color = 3355443
     Padding.Left = 5
     Padding.Top = 3
     Padding.Right = 3
@@ -547,10 +547,9 @@ object FPrincipal: TFPrincipal
             Height = 30
             Align = alTop
             BevelOuter = bvNone
-            Color = clOlive
+            Color = clMaroon
             ParentBackground = False
             TabOrder = 0
-            ExplicitWidth = 94
             object btnPreview: TSpeedButton
               Left = 0
               Top = 0
@@ -565,6 +564,7 @@ object FPrincipal: TFPrincipal
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
+              OnClick = btnPreviewClick
               ExplicitLeft = 40
               ExplicitTop = 40
               ExplicitWidth = 23
@@ -581,7 +581,6 @@ object FPrincipal: TFPrincipal
             Color = clNavy
             ParentBackground = False
             TabOrder = 1
-            ExplicitWidth = 94
             object btnGerar: TSpeedButton
               Left = 0
               Top = 0
@@ -612,7 +611,6 @@ object FPrincipal: TFPrincipal
           Caption = 'pnlTemplate'
           ShowCaption = False
           TabOrder = 3
-          ExplicitWidth = 227
           object cbxInterface: TComboBox
             AlignWithMargins = True
             Left = 3
@@ -629,7 +627,6 @@ object FPrincipal: TFPrincipal
               'Classe + Property'
               'Classe + Property + Setters'
               'Classe + Property + Setters + Getters')
-            ExplicitWidth = 221
           end
           object cbxModel: TComboBox
             AlignWithMargins = True
@@ -647,7 +644,6 @@ object FPrincipal: TFPrincipal
               'Classe + Property'
               'Classe + Property + Setters'
               'Classe + Property + Setters + Getters')
-            ExplicitWidth = 221
           end
           object cbxController: TComboBox
             AlignWithMargins = True
@@ -665,7 +661,6 @@ object FPrincipal: TFPrincipal
               'Classe + Property'
               'Classe + Property + Setters'
               'Classe + Property + Setters + Getters')
-            ExplicitWidth = 221
           end
           object cbxDao: TComboBox
             AlignWithMargins = True
@@ -683,7 +678,6 @@ object FPrincipal: TFPrincipal
               'Classe + Property'
               'Classe + Property + Setters'
               'Classe + Property + Setters + Getters')
-            ExplicitWidth = 221
           end
         end
       end
@@ -710,7 +704,6 @@ object FPrincipal: TFPrincipal
         Padding.Left = 5
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 312
         object Label16: TLabel
           Left = 5
           Top = 0
@@ -745,7 +738,6 @@ object FPrincipal: TFPrincipal
         Padding.Bottom = 5
         ShowCaption = False
         TabOrder = 1
-        ExplicitWidth = 312
         object pnlTables: TPanel
           Left = 5
           Top = 5
@@ -755,7 +747,6 @@ object FPrincipal: TFPrincipal
           BevelOuter = bvNone
           Padding.Bottom = 5
           TabOrder = 0
-          ExplicitWidth = 302
           object dbgTables: TDBGrid
             Left = 0
             Top = 17
@@ -781,7 +772,6 @@ object FPrincipal: TFPrincipal
             Padding.Left = 5
             ParentBackground = False
             TabOrder = 1
-            ExplicitWidth = 302
             object Label5: TLabel
               Left = 5
               Top = 0
@@ -812,7 +802,6 @@ object FPrincipal: TFPrincipal
           BevelOuter = bvNone
           Padding.Bottom = 5
           TabOrder = 1
-          ExplicitWidth = 302
           object dbgFields: TDBGrid
             Left = 0
             Top = 17
@@ -838,7 +827,6 @@ object FPrincipal: TFPrincipal
             Padding.Left = 5
             ParentBackground = False
             TabOrder = 1
-            ExplicitWidth = 302
             object lblFields: TLabel
               Left = 5
               Top = 0
@@ -868,7 +856,6 @@ object FPrincipal: TFPrincipal
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 2
-          ExplicitWidth = 302
           object dbgKeys: TDBGrid
             Left = 0
             Top = 17
@@ -894,7 +881,6 @@ object FPrincipal: TFPrincipal
             Padding.Left = 5
             ParentBackground = False
             TabOrder = 1
-            ExplicitWidth = 302
             object Label7: TLabel
               Left = 5
               Top = 0
@@ -929,8 +915,6 @@ object FPrincipal: TFPrincipal
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 2
-      ExplicitLeft = 324
-      ExplicitWidth = 961
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -942,7 +926,6 @@ object FPrincipal: TFPrincipal
         Padding.Left = 5
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 959
         object Label4: TLabel
           Left = 5
           Top = 0
@@ -971,10 +954,8 @@ object FPrincipal: TFPrincipal
         ActivePage = tabController
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 959
         object tabInterface: TTabSheet
           Caption = 'Interface'
-          ExplicitWidth = 951
           object memoInterface: TMemo
             Left = 0
             Top = 0
@@ -983,13 +964,11 @@ object FPrincipal: TFPrincipal
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 951
           end
         end
         object tabController: TTabSheet
           Caption = 'Controller'
           ImageIndex = 1
-          ExplicitWidth = 951
           object memoController: TMemo
             Left = 0
             Top = 0
@@ -998,13 +977,11 @@ object FPrincipal: TFPrincipal
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 951
           end
         end
         object tabModel: TTabSheet
           Caption = 'Model'
           ImageIndex = 2
-          ExplicitWidth = 951
           object memoModel: TMemo
             Left = 0
             Top = 0
@@ -1023,13 +1000,11 @@ object FPrincipal: TFPrincipal
               '}')
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 951
           end
         end
         object tabDao: TTabSheet
           Caption = 'Dao'
           ImageIndex = 3
-          ExplicitWidth = 951
           object memodao: TMemo
             Left = 0
             Top = 0
@@ -1038,7 +1013,6 @@ object FPrincipal: TFPrincipal
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 951
           end
         end
       end

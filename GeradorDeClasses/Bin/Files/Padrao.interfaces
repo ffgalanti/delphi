@@ -3,12 +3,12 @@ unit [appnome].Interface.[classe];
 interface
 
 type
-  IModel[classe] = interface
+  IModel[upperclasse] = interface
     // ctrl+shift+g para assinar a interface
-    function Insert : IModel[classe];    
-    function Update : IModel[classe];    
-    function Delete : IModel[classe];    
-    function Search : IModel[classe];    
+    function Insert : IModel[upperclasse];    
+    function Update : IModel[upperclasse];    
+    function Delete : IModel[upperclasse];    
+    function Search : IModel[upperclasse];    
   end;
   
   IController[classe] = interface

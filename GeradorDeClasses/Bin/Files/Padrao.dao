@@ -62,7 +62,7 @@ begin
 
       if not oQuery.IsEmpty then
       begin
-        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').AsInteger;
+        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').[astipo];
 
         if (DateToStr(oQuery.FieldByName('dtfechamento').AsDateTime) = '30/12/1899') then
           model.CaixaAberto := True
@@ -134,7 +134,7 @@ begin
 
       if not oQuery.IsEmpty then
       begin
-        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').AsInteger;
+        model.[secFields][campo] := oQuery.FieldByName('[secFields][campo]').[astipo];
 
         if (DateToStr(oQuery.FieldByName('dtfechamento').AsDateTime) = '30/12/1899') then
           model.CaixaAberto := True

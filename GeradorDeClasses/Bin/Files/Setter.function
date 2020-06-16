@@ -1,0 +1,4 @@
+procedure TModel[classe].Set[campo](Value: [tipo]);
+begin
+  F[campo] := Value;
+end;

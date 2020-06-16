@@ -1,0 +1,4 @@
+function TModel[classe].Get[campo]: [tipo];
+begin
+  Result := Self.F[campo];
+end;

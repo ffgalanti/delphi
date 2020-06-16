@@ -3,16 +3,14 @@ unit View.Principal;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
-  Vcl.ComCtrls, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
-  GeradorMVC.Interfaces.ModelConexaoFireDac,
-  GeradorMVC.Interfaces.ModelQueryFireDac, Data.DB, System.JSON, Vcl.Grids,
-  Vcl.DBGrids;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, Vcl.ComCtrls, Vcl.ActnList,
+  Interfaces.ConexaoFireDac, Interfaces.QueryFireDac, Data.DB, System.JSON,
+  Vcl.DBGrids, Interfaces.Gerar, System.Actions, System.ImageList, Vcl.ImgList,
+  Vcl.Grids, Types;
 
 type
-  TTypeDriver = (drFirebird, drPostgreSQL);
-
   TFPrincipal = class(TForm)
     pnlTitle: TPanel;
     lblTitle: TLabel;
@@ -121,10 +119,12 @@ type
     procedure btnConectarClick(Sender: TObject);
 
     procedure DSOnChange(Sender: TObject; Field: TField);
+    procedure btnPreviewClick(Sender: TObject);
   private
     { Private declarations }
     FConexaoJson: TJSONObject;
-    FSQLTabela, FSQLCampos, FSQLChaves: string;
+    FSQLTabela, FSQLCampos, FSQLChaves, FSQLTabelaSelecionada: string;
+    FModelGerar: IModelGerar;
 
     procedure LerConfiguracao;
     procedure GravarConfiguracao;
@@ -153,8 +153,6 @@ type
 
     FConexao     : iModelConexaoFireDac;
     FQueryTabelas: iModelQueryFireDac;
-    FQueryCampos : iModelQueryFireDac;
-    FQueryChaves : iModelQueryFireDac;
 
     FDsTabela: TDataSource;
     FDsCampos: TDataSource;
@@ -171,8 +169,9 @@ implementation
 
 uses
   System.StrUtils,
-  Vcl.FileCtrl, System.IniFiles, GeradorMVC.Model.ConexaoFireDac,
-  GeradorMVC.Model.QueryFireDac;
+  Vcl.FileCtrl, System.IniFiles,
+  Gerar, ConexaoFireDac,
+  QueryFireDac;
 
 {$R *.dfm}
 
@@ -247,6 +246,14 @@ begin
   AtivarDesativarCtrl;
 end;
 
+procedure TFPrincipal.btnPreviewClick(Sender: TObject);
+begin
+  memoInterface.Lines  :=  FModelGerar.Execute(edtConfig.Text, cbxInterface.Text);
+  memoController.Lines :=  FModelGerar.Execute(edtConfig.Text, cbxController.Text);
+  memoModel.Lines      :=  FModelGerar.Execute(edtConfig.Text, cbxModel.Text);
+  memoDao.Lines        :=  FModelGerar.Execute(edtConfig.Text, cbxDao.Text);
+end;
+
 procedure TFPrincipal.CarregarTemplates;
 begin
   AddFiles(edtConfig.Text, '*.interfaces', cbxInterface);
@@ -304,7 +311,6 @@ begin
   CriarConexaoJson;
   FConexao := TModelConexaoFireDac.New(FConexaoJson);
   CriarDataSource;
-//  FClasse := TModelClasse.New(edtNomeApp.Text, FConexao, '', modClass);
 end;
 
 procedure TFPrincipal.CriarDataSource;
@@ -330,6 +336,7 @@ begin
   FSQLTabela := 'select rdb$relation_name as Tabela from rdb$relations where rdb$system_flag = 0;';
   FSQLCampos := '';
   FSQLChaves := '';
+  FSQLTabelaSelecionada := 'SELECT first 1 * FROM %s';
 
   edtPorta.Text := IfThen(edtPorta.Text = '', '3050', edtPorta.Text);
   edtUsuario.Text := IfThen(edtUsuario.Text = '', 'sysdba', edtUsuario.Text);
@@ -388,6 +395,8 @@ begin
                 'pg_attribute.attrelid = pg_class.oid and ' +
                 'pg_attribute.attnum = any(pg_index.indkey) ' +
                 'and indisprimary';
+
+  FSQLTabelaSelecionada := 'SELECT * FROM %s LIMIT 1';
 
   edtPorta.Text := IfThen(edtPorta.Text = '', '5432', edtPorta.Text);
   edtUsuario.Text := IfThen(edtUsuario.Text = '', 'postgres', edtUsuario.Text);
@@ -455,19 +464,23 @@ end;
 
 procedure TFPrincipal.FormShow(Sender: TObject);
 begin
+  FModelGerar := TModelGerar.New;
+
   cbbDriverChange(Self);
   sbClose.Cursor := crDefault;
 end;
 
 procedure TFPrincipal.GetCamposChaves;
 begin
-  FQueryCampos          := TModelQueryFireDac.New(FConexao, Format(FSQLCampos,[dbgTables.Columns.Items[0].Field.Value]));
-  FDsCampos.DataSet     := FQueryCampos.GetQuery;
-  FQueryCampos.GetQuery.Active := true;
-
-  FQueryChaves          := TModelQueryFireDac.New(FConexao, Format(FSQLChaves,[dbgTables.Columns.Items[0].Field.Value]));
-  FDsChaves.DataSet     := FQueryChaves.GetQuery;
-  FQueryChaves.GetQuery.Active := true;
+  FModelGerar.Params
+    .NomeAplicativo(edtNomeApp.Text)
+    .Conexao(FConexao)
+    .NomeTabela(dbgTables.Columns.Items[0].Field.Value)
+    .SQLTabelaSelecionada(FSQLTabelaSelecionada)
+  .&End
+  .GetQueryCampos(FDsCampos, Format(FSQLCampos,[dbgTables.Columns.Items[0].Field.Value]))
+  .GetQueryChaves(FDsChaves, Format(FSQLChaves,[dbgTables.Columns.Items[0].Field.Value]))
+  ;
 
   ConfigurarGrids;
 end;
